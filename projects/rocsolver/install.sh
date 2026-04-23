@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# ANSI colors & styles
+plain="\033[0m"
+green="\033[32m"
+yellow="\033[33m"
+
 # #################################################
 # helper functions
 # #################################################
@@ -126,7 +131,7 @@ elevate_if_not_root( )
 install_apt_packages( )
 {
   packages=("$@")
-  printf "\033[32mInstalling \033[33m${packages[*]}\033[32m from distro package manager\033[0m\n"
+  printf "${green}Installing ${yellow}${packages[*]}${green} from distro package manager${plain}\n"
   elevate_if_not_root apt install -y --no-install-recommends "${packages[@]}"
 }
 
@@ -134,7 +139,7 @@ install_apt_packages( )
 install_yum_packages( )
 {
   packages=("$@")
-  printf "\033[32mInstalling \033[33m${packages[*]}\033[32m from distro package manager\033[0m\n"
+  printf "${green}Installing ${yellow}${packages[*]}${green} from distro package manager${plain}\n"
   elevate_if_not_root yum -y --nogpgcheck install "${packages[@]}"
 }
 
@@ -142,14 +147,14 @@ install_yum_packages( )
 install_dnf_packages( )
 {
   packages=("$@")
-  printf "\033[32mInstalling \033[33m${packages[*]}\033[32m from distro package manager\033[0m\n"
+  printf "${green}Installing ${yellow}${packages[*]}${green} from distro package manager${plain}\n"
   elevate_if_not_root dnf install -y "${packages[@]}"
 }
 
 install_zypper_packages( )
 {
   packages=("$@")
-  printf "\033[32mInstalling \033[33m${packages[*]}\033[32m from distro package manager\033[0m\n"
+  printf "${green}Installing ${yellow}${packages[*]}${green} from distro package manager${plain}\n"
   elevate_if_not_root zypper install -y "${packages[@]}"
 }
 
@@ -445,7 +450,7 @@ while true; do
 done
 
 set -x
-printf "\033[32mCreating project build directory in: \033[33m${build_dir}\033[0m\n"
+printf "${green}Creating project build directory in: ${yellow}${build_dir}${plain}\n"
 
 # #################################################
 # prep
@@ -495,18 +500,18 @@ if [[ "${install_dependencies}" == true ]]; then
   install_packages
 
   cmake_version=$(${cmake_executable} --version | grep -oP '(?<=version )[^ ]*')
-  printf "\033[32mUsing \033[33m$(command -v ${cmake_executable})\033[32m (version ${cmake_version})\033[0m\n"
+  printf "${green}Using ${yellow}$(command -v ${cmake_executable})${green} (version ${cmake_version})${plain}\n"
 
   pushd .
   mkdir -p "${build_dir}/deps"
   cd "${build_dir}/deps"
-  printf "\033[32mBuilding \033[33mfmt\033[32m and installing into \033[33m/usr/local\033[0m\n"
+  printf "${green}Building ${yellow}fmt${green} and installing into ${yellow}/usr/local${plain}\n"
   install_fmt_from_source
 
   if [[ "${build_clients}" == true ]]; then
-    printf "\033[32mBuilding \033[33mlapack\033[32m and installing into \033[33m/usr/local\033[0m\n"
+    printf "${green}Building ${yellow}lapack${green} and installing into ${yellow}/usr/local${plain}\n"
     install_lapack_from_source
-    printf "\033[32mBuilding \033[33mgoogletest\033[32m and installing into \033[33m/usr/local\033[0m\n"
+    printf "${green}Building ${yellow}googletest${green} and installing into ${yellow}/usr/local${plain}\n"
     install_gtest_from_source
   fi
   popd
