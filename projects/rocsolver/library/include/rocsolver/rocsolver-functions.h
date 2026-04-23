@@ -198,7 +198,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_get_alg_mode(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The dimension of vector x.
-    @param[inout]
+    @param[in,out]
     x           pointer to type. Array on the GPU of size at least n (size depends on the value of incx).
                 On entry, the vector x.
                 On exit, each entry is overwritten with its conjugate value.
@@ -445,7 +445,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgecon_64(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix to which the row
                 interchanges will be applied. On exit, the resulting permuted matrix.
@@ -556,11 +556,11 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zlaswp(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The order (size) of reflector H.
-    @param[inout]
+    @param[in,out]
     alpha       pointer to type. A scalar on the GPU.
                 On entry, the scalar alpha.
                 On exit, it is overwritten with beta.
-    @param[inout]
+    @param[in,out]
     x           pointer to type. Array on the GPU of size at least n-1 (size depends on the value of incx).
                 On entry, the vector x,
                 On exit, it is overwritten with vector v.
@@ -770,7 +770,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zlarft(rocblas_handle handle,
     @param[in]
     alpha       pointer to type. A scalar on the GPU.
                 The Householder scalar. If alpha = 0, then H = I (A will remain the same, and x is never used).
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of size lda*n.
                 On entry, the matrix A. On exit, it is overwritten with
                 H*A (or A*H).
@@ -937,7 +937,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zlarf_64(rocblas_handle handle,
     @param[in]
     ldt         rocblas_int. ldt >= k.
                 The leading dimension of T.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of size lda*n.
                 On entry, the matrix A. On exit, it is overwritten with
                 H*A, A*H, H'*A, or A*H'.
@@ -1076,7 +1076,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zlarfb(rocblas_handle handle,
     S           pointer to real type. Array on the GPU of size n-1 if side is right, or m-1
                 if side is left.
                 Contains the series of sine factors defining the Givens rotations.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of size lda*n.
                 On entry, the matrix A. On exit, it is overwritten with
                 P*A, or A*P^T.
@@ -1185,7 +1185,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zlasr(rocblas_handle handle,
     @param[in]
     k           rocblas_int. min(m,n) >= k >= 0.
                 The number of leading rows and columns of matrix A that will be reduced.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix to be reduced.
                 On exit, the first k elements on the diagonal and superdiagonal (if m >= n) or
@@ -1340,7 +1340,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zlabrd(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= n.
                 The number of rows and columns of the matrix A to be reduced.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the n-by-n matrix to be reduced.
                 On exit, if uplo is lower, the first k columns have been reduced to tridiagonal form
@@ -1467,7 +1467,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zlatrd(rocblas_handle handle,
     kb          pointer to a rocblas_int on the GPU.
                 The number of columns of A that were actually factored (either nb or
                 nb-1).
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the symmetric matrix A to be factored.
                 On exit, the partially factored matrix.
@@ -1553,7 +1553,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zlasyf(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns and rows of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, it contains the upper (or lower) part of the symmetric/Hermitian matrix.
                 On exit, the upper (or lower) part is overwritten with the result of U*U' (or L'*L).
@@ -1614,7 +1614,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zlauum(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= n.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GEQRF", with the Householder vectors in the first k columns.
                 On exit, the computed matrix Q.
@@ -1670,7 +1670,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dorg2r(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= n.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GEQRF", with the Householder vectors in the first k columns.
                 On exit, the computed matrix Q.
@@ -1726,7 +1726,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zung2r(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= n.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GEQRF", with the Householder vectors in the first k columns.
                 On exit, the computed matrix Q.
@@ -1782,7 +1782,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dorgqr(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= n.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GEQRF", with the Householder vectors in the first k columns.
                 On exit, the computed matrix Q.
@@ -1838,7 +1838,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zungqr(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= m.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GELQF", with the Householder vectors in the first k rows.
                 On exit, the computed matrix Q.
@@ -1894,7 +1894,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dorgl2(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= m.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GELQF", with the Householder vectors in the first k rows.
                 On exit, the computed matrix Q.
@@ -1950,7 +1950,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zungl2(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= m.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GELQF", with the Householder vectors in the first k rows.
                 On exit, the computed matrix Q.
@@ -2006,7 +2006,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dorglq(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= m.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GELQF", with the Householder vectors in the first k rows.
                 On exit, the computed matrix Q.
@@ -2062,7 +2062,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zunglq(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= n.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GEQLF", with the Householder vectors in the last k columns.
                 On exit, the computed matrix Q.
@@ -2118,7 +2118,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dorg2l(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= n.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GEQLF", with the Householder vectors in the last k columns.
                 On exit, the computed matrix Q.
@@ -2174,7 +2174,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zung2l(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= n.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GEQLF", with the Householder vectors in the last k columns.
                 On exit, the computed matrix Q.
@@ -2230,7 +2230,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dorgql(rocblas_handle handle,
     @param[in]
     k           rocblas_int. 0 <= k <= n.
                 The number of Householder reflectors.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A as returned by \ref rocsolver_sgeqrf "GEQLF", with the Householder vectors in the last k columns.
                 On exit, the computed matrix Q.
@@ -2309,7 +2309,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zungql(rocblas_handle handle,
     k           rocblas_int. k >= 0.
                 The number of columns (if storev is column-wise) or rows (if row-wise) of the
                 original matrix reduced by \ref rocsolver_sgebrd "GEBRD".
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the Householder vectors as returned by \ref rocsolver_sgebrd "GEBRD".
                 On exit, the computed matrix Q.
@@ -2391,7 +2391,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dorgbr(rocblas_handle handle,
     k           rocblas_int. k >= 0.
                 The number of columns (if storev is column-wise) or rows (if row-wise) of the
                 original matrix reduced by \ref rocsolver_sgebrd "GEBRD".
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the Householder vectors as returned by \ref rocsolver_sgebrd "GEBRD".
                 On exit, the computed matrix Q.
@@ -2453,7 +2453,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zungbr(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrix Q.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the Householder vectors as returned
                 by \ref rocsolver_ssytrd "SYTRD". On exit, the computed matrix Q.
@@ -2511,7 +2511,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dorgtr(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrix Q.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the Householder vectors as returned
                 by \ref rocsolver_chetrd "HETRD". On exit, the computed matrix Q.
@@ -2593,7 +2593,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zungtr(rocblas_handle handle,
     @param[in]
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by \ref rocsolver_sgeqrf "GEQRF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -2682,7 +2682,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dorm2r(rocblas_handle handle,
     @param[in]
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by \ref rocsolver_sgeqrf "GEQRF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -2772,7 +2772,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zunm2r(rocblas_handle handle,
     @param[in]
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by \ref rocsolver_sgeqrf "GEQRF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -2861,7 +2861,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dormqr(rocblas_handle handle,
     @param[in]
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by \ref rocsolver_sgeqrf "GEQRF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -2950,7 +2950,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zunmqr(rocblas_handle handle,
     @param[in]
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by \ref rocsolver_sgelqf "GELQF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -3040,7 +3040,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dorml2(rocblas_handle handle,
     @param[in]
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by \ref rocsolver_sgelqf "GELQF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -3129,7 +3129,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zunml2(rocblas_handle handle,
     @param[in]
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by \ref rocsolver_sgelqf "GELQF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -3218,7 +3218,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dormlq(rocblas_handle handle,
     @param[in]
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by \ref rocsolver_sgelqf "GELQF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -3310,7 +3310,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zunmlq(rocblas_handle handle,
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by
                 \ref rocsolver_sgeqlf "GEQLF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -3402,7 +3402,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dorm2l(rocblas_handle handle,
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by
                 \ref rocsolver_sgeqlf "GEQLF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -3494,7 +3494,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zunm2l(rocblas_handle handle,
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by
                 \ref rocsolver_sgeqlf "GEQLF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -3586,7 +3586,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dormql(rocblas_handle handle,
     ipiv        pointer to type. Array on the GPU of dimension at least k.
                 The Householder scalars as returned by
                 \ref rocsolver_sgeqlf "GEQLF".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -3698,7 +3698,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zunmql(rocblas_handle handle,
     @param[in]
     ipiv        pointer to type. Array on the GPU of dimension at least min(q,k).
                 The Householder scalars as returned by \ref rocsolver_sgebrd "GEBRD".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -3812,7 +3812,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dormbr(rocblas_handle handle,
     @param[in]
     ipiv        pointer to type. Array on the GPU of dimension at least min(q,k).
                 The Householder scalars as returned by \ref rocsolver_sgebrd "GEBRD".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -3915,7 +3915,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zunmbr(rocblas_handle handle,
     ipiv        pointer to type. Array on the GPU of dimension at least q-1.
                 The Householder scalars as returned by
                 \ref rocsolver_ssytrd "SYTRD".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -4016,7 +4016,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dormtr(rocblas_handle handle,
     ipiv        pointer to type. Array on the GPU of dimension at least q-1.
                 The Householder scalars as returned by
                 \ref rocsolver_chetrd "HETRD".
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of size ldc*n.
                 On entry, the matrix C. On exit, it is overwritten with
                 Q*C, C*Q, Q'*C, or C*Q'.
@@ -4095,32 +4095,32 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zunmtr(rocblas_handle handle,
     @param[in]
     nc          rocblas_int. nc >= 0.
                 The number of columns of matrix C.
-    @param[inout]
+    @param[in,out]
     D           pointer to real type. Array on the GPU of dimension n.
                 On entry, the diagonal elements of B. On exit, if info = 0,
                 the singular values of B in decreasing order, and if info > 0,
                 the diagonal elements of a bidiagonal matrix
                 orthogonally equivalent to B.
-    @param[inout]
+    @param[in,out]
     E           pointer to real type. Array on the GPU of dimension n-1.
                 On entry, the off-diagonal elements of B. On exit, if info > 0,
                 the off-diagonal elements of a bidiagonal matrix
                 orthogonally equivalent to B (if info = 0 this matrix converges to zero).
-    @param[inout]
+    @param[in,out]
     V           pointer to type. Array on the GPU of dimension ldv*nv.
                 On entry, the matrix V. On exit, it is overwritten with P'*V.
                 (Not referenced if nv = 0.)
     @param[in]
     ldv         rocblas_int. ldv >= n if nv > 0, or ldv >=1 if nv = 0.
                 The leading dimension of V.
-    @param[inout]
+    @param[in,out]
     U           pointer to type. Array on the GPU of dimension ldu*n.
                 On entry, the matrix U. On exit, it is overwritten with U*Q.
                 (Not referenced if nu = 0.)
     @param[in]
     ldu         rocblas_int. ldu >= nu.
                 The leading dimension of U.
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of dimension ldc*nc.
                 On entry, the matrix C. On exit, it is overwritten with Q'*C.
                 (Not referenced if nc = 0.)
@@ -4218,14 +4218,14 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zbdsqr(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the tridiagonal matrix.
-    @param[inout]
+    @param[in,out]
     D           pointer to real type. Array on the GPU of dimension n.
                 On entry, the diagonal elements of the tridiagonal matrix.
                 On exit, if info = 0, the eigenvalues in increasing order.
                 If info > 0, the diagonal elements of a tridiagonal matrix
                 that is similar to the original matrix (that is, it has the same
                 eigenvalues).
-    @param[inout]
+    @param[in,out]
     E           pointer to real type. Array on the GPU of dimension n-1.
                 On entry, the off-diagonal elements of the tridiagonal matrix.
                 On exit, if info = 0, this array converges to zero.
@@ -4274,21 +4274,21 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsterf(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the tridiagonal matrix.
-    @param[inout]
+    @param[in,out]
     D           pointer to real type. Array on the GPU of dimension n.
                 On entry, the diagonal elements of the tridiagonal matrix.
                 On exit, if info = 0, the eigenvalues in increasing order.
                 If info > 0, the diagonal elements of a tridiagonal matrix
                 that is similar to the original matrix (that is, it has the same
                 eigenvalues).
-    @param[inout]
+    @param[in,out]
     E           pointer to real type. Array on the GPU of dimension n-1.
                 On entry, the off-diagonal elements of the tridiagonal matrix.
                 On exit, if info = 0, this array converges to zero.
                 If info > 0, the off-diagonal elements of a tridiagonal matrix
                 that is similar to the original matrix (that is, it has the same
                 eigenvalues).
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of dimension ldc*n.
                 On entry, if evect is original, the orthogonal/unitary matrix
                 used for the reduction to tridiagonal form as returned by, for example,
@@ -4367,15 +4367,15 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zsteqr(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the tridiagonal matrix.
-    @param[inout]
+    @param[in,out]
     D           pointer to real type. Array on the GPU of dimension n.
                 On entry, the diagonal elements of the tridiagonal matrix.
                 On exit, if info = 0, the eigenvalues in increasing order.
-    @param[inout]
+    @param[in,out]
     E           pointer to real type. Array on the GPU of dimension n-1.
                 On entry, the off-diagonal elements of the tridiagonal matrix.
                 On exit, if info = 0, the values of this array are destroyed.
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of dimension ldc*n.
                 On entry, if evect is original, the orthogonal/unitary matrix
                 used for the reduction to tridiagonal form as returned by, for example,
@@ -4828,7 +4828,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dbdsvdx(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix A to be factored.
                 On exit, the factors L and U from the factorization.
@@ -5045,7 +5045,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetf2_npvt_batched_64(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the factors L_l and U_l from the factorization.
@@ -5171,7 +5171,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetf2_npvt_strided_batched_64(rocblas
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix A to be factored.
                 On exit, the factors L and U from the factorization.
@@ -5274,7 +5274,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetrf_npvt_64(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the factors L_l and U_l from the factorizations.
@@ -5389,7 +5389,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetrf_npvt_batched_64(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the factors L_l and U_l from the factorization.
@@ -5512,7 +5512,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetrf_npvt_strided_batched_64(rocblas
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix A to be factored.
                 On exit, the factors L and U from the factorization.
@@ -5624,7 +5624,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetf2_64(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the factors L_l and U_l from the factorizations.
@@ -5761,7 +5761,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetf2_batched_64(rocblas_handle handl
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the factors L_l and U_l from the factorization.
@@ -5910,7 +5910,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetf2_strided_batched_64(rocblas_hand
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix A to be factored.
                 On exit, the factors L and U from the factorization.
@@ -6022,7 +6022,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetrf_64(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the factors L_l and U_l from the factorizations.
@@ -6159,7 +6159,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetrf_batched_64(rocblas_handle handl
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the factors L_l and U_l from the factorization.
@@ -6319,7 +6319,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetrf_strided_batched_64(rocblas_hand
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix to be factored.
                 On exit, the elements on and above the diagonal contain the
@@ -6429,7 +6429,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeqr2_64(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and above the diagonal contain the
@@ -6563,7 +6563,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeqr2_batched_64(rocblas_handle handl
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and above the diagonal contain the
@@ -6707,7 +6707,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeqr2_strided_batched_64(rocblas_hand
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix to be factored.
                 On exit, the elements on and above the (m-n)-th subdiagonal (when
@@ -6789,7 +6789,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgerq2(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and above the (m-n)-th subdiagonal (when
@@ -6887,7 +6887,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgerq2_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and above the (m-n)-th subdiagonal (when
@@ -6993,7 +6993,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgerq2_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix to be factored.
                 On exit, the elements on and below the (m-n)-th subdiagonal (when
@@ -7076,7 +7076,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeql2(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and below the (m-n)-th subdiagonal (when
@@ -7175,7 +7175,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeql2_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and below the (m-n)-th subdiagonal (when
@@ -7280,7 +7280,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeql2_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix to be factored.
                 On exit, the elements on and below the diagonal contain the
@@ -7361,7 +7361,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgelq2(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and below the diagonal contain the
@@ -7458,7 +7458,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgelq2_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and below the diagonal contain the
@@ -7563,7 +7563,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgelq2_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix to be factored.
                 On exit, the elements on and above the diagonal contain the
@@ -7673,7 +7673,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeqrf_64(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and above the diagonal contain the
@@ -7807,7 +7807,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeqrf_batched_64(rocblas_handle handl
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and above the diagonal contain the
@@ -7952,7 +7952,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeqrf_strided_batched_64(rocblas_hand
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix to be factored.
                 On exit, the elements on and above the (m-n)-th subdiagonal (when
@@ -8034,7 +8034,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgerqf(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and above the (m-n)-th subdiagonal (when
@@ -8132,7 +8132,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgerqf_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and above the (m-n)-th subdiagonal (when
@@ -8238,7 +8238,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgerqf_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix to be factored.
                 On exit, the elements on and below the (m-n)-th subdiagonal (when
@@ -8321,7 +8321,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeqlf(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and below the (m-n)-th subdiagonal (when
@@ -8420,7 +8420,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeqlf_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and below the (m-n)-th subdiagonal (when
@@ -8525,7 +8525,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeqlf_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix to be factored.
                 On exit, the elements on and below the diagonal contain the
@@ -8606,7 +8606,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgelqf(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and below the diagonal contain the
@@ -8703,7 +8703,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgelqf_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on and below the diagonal contain the
@@ -8814,7 +8814,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgelqf_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix to be factored.
                 On exit, the elements on the diagonal and superdiagonal (if m >= n), or
@@ -8928,7 +8928,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgebd2(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on the diagonal and superdiagonal (if m >= n), or
@@ -9083,7 +9083,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgebd2_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on the diagonal and superdiagonal (if m >= n), or
@@ -9245,7 +9245,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgebd2_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrix to be factored.
                 On exit, the elements on the diagonal and superdiagonal (if m >= n), or
@@ -9359,7 +9359,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgebrd(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on the diagonal and superdiagonal (if m >= n), or
@@ -9514,7 +9514,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgebrd_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all the matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the m-by-n matrices A_l to be factored.
                 On exit, the elements on the diagonal and superdiagonal (if m >= n), or
@@ -9669,7 +9669,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgebrd_strided_batched(rocblas_handle 
     @param[in]
     ipiv        pointer to rocblas_int. Array on the GPU of dimension n.
                 The pivot indices returned by \ref rocsolver_sgetrf "GETRF".
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU of dimension ldb*nrhs.
                 On entry, the right hand side matrix B.
                 On exit, the solution matrix X.
@@ -9801,7 +9801,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetrs_64(rocblas_handle handle,
     strideP     rocblas_stride.
                 Stride from the start of one vector ipiv_l to the next one ipiv_(l+1).
                 There is no restriction for the value of strideP. The normal use case is strideP >= n.
-    @param[inout]
+    @param[in,out]
     B           Array of pointers to type. Each pointer points to an array on the GPU of dimension ldb*nrhs.
                 On entry, the right hand side matrices B_l.
                 On exit, the solution matrix X_l of each system in the batch.
@@ -9956,7 +9956,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetrs_batched_64(rocblas_handle handl
     strideP     rocblas_stride.
                 Stride from the start of one vector ipiv_l to the next one ipiv_(l+1).
                 There is no restriction for the value of strideP. The normal use case is strideP >= n.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU (size depends on the value of strideB).
                 On entry, the right hand side matrices B_l.
                 On exit, the solution matrix X_l of each system in the batch.
@@ -10107,7 +10107,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetrs_strided_batched_64(rocblas_hand
     nrhs        rocblas_int. nrhs >= 0.
                 The number of right hand sides, that is, the number of columns
                 of the matrix B.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A.
                 On exit, if info = 0, the factors L and U of the LU decomposition of A returned by
@@ -10118,7 +10118,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetrs_strided_batched_64(rocblas_hand
     @param[out]
     ipiv        pointer to rocblas_int. Array on the GPU of dimension n.
                 The pivot indices returned by \ref rocsolver_sgetrf "GETRF".
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU of dimension ldb*nrhs.
                 On entry, the right hand side matrix B.
                 On exit, the solution matrix X.
@@ -10196,7 +10196,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesv(rocblas_handle handle,
     nrhs        rocblas_int. nrhs >= 0.
                 The number of right hand sides, that is, the number of columns
                 of all the matrices B_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l.
                 On exit, if info[l] = 0, the factors L_l and U_l of the LU decomposition of A_l returned by
@@ -10211,7 +10211,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesv(rocblas_handle handle,
     strideP     rocblas_stride.
                 Stride from the start of one vector ipiv_l to the next one ipiv_(l+1).
                 There is no restriction for the value of strideP. The normal use case is strideP >= n.
-    @param[inout]
+    @param[in,out]
     B           Array of pointers to type. Each pointer points to an array on the GPU of dimension ldb*nrhs.
                 On entry, the right hand side matrices B_l.
                 On exit, the solution matrix X_l of each system in the batch.
@@ -10309,7 +10309,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesv_batched(rocblas_handle handle,
     @param[in]
     lda         rocblas_int. lda >= n.
                 The leading dimension of matrices A_l.
-    @param[inout]
+    @param[in,out]
     strideA     rocblas_stride.
                 Stride from the start of one matrix A_l to the next one A_(l+1).
                 There is no restriction for the value of strideA. The normal use case is strideA >= lda*n.
@@ -10320,7 +10320,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesv_batched(rocblas_handle handle,
     strideP     rocblas_stride.
                 Stride from the start of one vector ipiv_l to the next one ipiv_(l+1).
                 There is no restriction for the value of strideP. The normal use case is strideP >= n.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU (size depends on the value of strideB).
                 On entry, the right hand side matrices B_l.
                 On exit, the solution matrix X_l of each system in the batch.
@@ -10417,7 +10417,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesv_strided_batched(rocblas_handle h
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the factors L and U of the factorization A = P*L*U returned by \ref rocsolver_sgetrf "GETRF".
                 On exit, the inverse of A if info = 0, and otherwise undefined.
@@ -10481,7 +10481,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetri(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the factors L_l and U_l of the factorization A_l = P_l*L_l*U_l returned by
                 \ref rocsolver_sgetrf_batched "GETRF_BATCHED".
@@ -10561,7 +10561,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetri_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the factors L_l and U_l of the factorization A_l = P_l*L_l*U_l returned by
                 \ref rocsolver_sgetrf_strided_batched "GETRF_STRIDED_BATCHED".
@@ -10649,7 +10649,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetri_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the factors L and U of the factorization A = L*U returned by \ref rocsolver_sgetrf_npvt "GETRF_NPVT".
                 On exit, the inverse of A if info = 0, and otherwise undefined.
@@ -10706,7 +10706,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetri_npvt(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the factors L_l and U_l of the factorization A_l = L_l*U_l returned by
                 \ref rocsolver_sgetrf_npvt_batched "GETRF_NPVT_BATCHED".
@@ -10771,7 +10771,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetri_npvt_batched(rocblas_handle han
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the factors L_l and U_l of the factorization A_l = L_l*U_l returned by
                 \ref rocsolver_sgetrf_npvt_strided_batched "GETRF_NPVT_STRIDED_BATCHED".
@@ -10865,14 +10865,14 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgetri_npvt_strided_batched(rocblas_ha
     nrhs        rocblas_int. nrhs >= 0.
                 The number of columns of matrices B and X,
                 that is, the columns on the right hand side.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A.
                 On exit, the QR (or LQ) factorization of A as returned by \ref rocsolver_sgeqrf "GEQRF" (or \ref rocsolver_sgelqf "GELQF").
     @param[in]
     lda         rocblas_int. lda >= m.
                 Specifies the leading dimension of matrix A.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU of dimension ldb*nrhs.
                 On entry, the matrix B.
                 On exit, when info = 0, B is overwritten by the solution vectors (and the residuals in
@@ -10972,7 +10972,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgels(rocblas_handle handle,
     nrhs        rocblas_int. nrhs >= 0.
                 The number of columns of all matrices B_l and X_l in the batch,
                 that is, the columns on the right hand side.
-    @param[inout]
+    @param[in,out]
     A           array of pointer to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l.
                 On exit, the QR (or LQ) factorizations of A_l as returned by \ref rocsolver_sgeqrf_batched "GEQRF_BATCHED"
@@ -10980,7 +10980,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgels(rocblas_handle handle,
     @param[in]
     lda         rocblas_int. lda >= m.
                 Specifies the leading dimension of matrices A_l.
-    @param[inout]
+    @param[in,out]
     B           array of pointer to type. Each pointer points to an array on the GPU of dimension ldb*nrhs.
                 On entry, the matrices B_l.
                 On exit, when info[l] = 0, B_l is overwritten by the solution vectors (and the residuals in
@@ -11088,7 +11088,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgels_batched(rocblas_handle handle,
     nrhs        rocblas_int. nrhs >= 0.
                 The number of columns of all matrices B_l and X_l in the batch,
                 that is, the columns on the right hand side.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l.
                 On exit, the QR (or LQ) factorizations of A_l as returned by \ref rocsolver_sgeqrf_strided_batched "GEQRF_STRIDED_BATCHED"
@@ -11100,7 +11100,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgels_batched(rocblas_handle handle,
     strideA     rocblas_stride.
                 Stride from the start of one matrix A_l to the next one A_(l+1).
                 There is no restriction for the value of strideA. The normal use case is strideA >= lda*n.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU (the size depends on the value of strideB).
                 On entry, the matrices B_l.
                 On exit, when info[l] = 0, each B_l is overwritten by the solution vectors (and the residuals in
@@ -11206,7 +11206,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgels_strided_batched(rocblas_handle h
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A to be factored. On exit, the lower or upper triangular factor.
     @param[in]
@@ -11303,7 +11303,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotf2_64(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l to be factored. On exit, the upper or lower triangular factors.
     @param[in]
@@ -11411,7 +11411,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotf2_batched_64(rocblas_handle handl
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l to be factored. On exit, the upper or lower triangular factors.
     @param[in]
@@ -11531,7 +11531,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotf2_strided_batched_64(rocblas_hand
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A to be factored. On exit, the lower or upper triangular factor.
     @param[in]
@@ -11628,7 +11628,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotrf_64(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l to be factored. On exit, the upper or lower triangular factors.
     @param[in]
@@ -11736,7 +11736,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotrf_batched_64(rocblas_handle handl
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l to be factored. On exit, the upper or lower triangular factors.
     @param[in]
@@ -11869,7 +11869,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotrf_strided_batched_64(rocblas_hand
     @param[in]
     lda         rocblas_int. lda >= n.
                 The leading dimension of A.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU of dimension ldb*nrhs.
                 On entry, the right hand side matrix B.
                 On exit, the solution matrix X.
@@ -11993,7 +11993,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotrs_64(rocblas_handle handle,
     @param[in]
     lda         rocblas_int. lda >= n.
                 The leading dimension of matrices A_l.
-    @param[inout]
+    @param[in,out]
     B           Array of pointers to type. Each pointer points to an array on the GPU of dimension ldb*nrhs.
                 On entry, the right hand side matrices B_l.
                 On exit, the solution matrix X_l of each system in the batch.
@@ -12132,7 +12132,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotrs_batched_64(rocblas_handle handl
     strideA     rocblas_stride.
                 Stride from the start of one matrix A_l to the next one A_(l+1).
                 There is no restriction for the value of strideA. The normal use case is strideA >= lda*n.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU (size depends on the value of strideB).
                 On entry, the right hand side matrices B_l.
                 On exit, the solution matrix X_l of each system in the batch.
@@ -12272,7 +12272,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotrs_strided_batched_64(rocblas_hand
     nrhs        rocblas_int. nrhs >= 0.
                 The number of right hand sides, that is, the number of columns
                 of the matrix B.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the symmetric/Hermitian matrix A.
                 On exit, if info = 0, the factor L or U of the Cholesky factorization of A returned by
@@ -12280,7 +12280,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotrs_strided_batched_64(rocblas_hand
     @param[in]
     lda         rocblas_int. lda >= n.
                 The leading dimension of A.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU of dimension ldb*nrhs.
                 On entry, the right hand side matrix B.
                 On exit, the solution matrix X.
@@ -12363,7 +12363,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zposv(rocblas_handle handle,
     nrhs        rocblas_int. nrhs >= 0.
                 The number of right hand sides, that is, the number of columns
                 of all the matrices B_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the symmetric/Hermitian matrices A_l.
                 On exit, if info[l] = 0, the factor L_l or U_l of the Cholesky factorization of A_l returned by
@@ -12371,7 +12371,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zposv(rocblas_handle handle,
     @param[in]
     lda         rocblas_int. lda >= n.
                 The leading dimension of matrices A_l.
-    @param[inout]
+    @param[in,out]
     B           Array of pointers to type. Each pointer points to an array on the GPU of dimension ldb*nrhs.
                 On entry, the right hand side matrices B_l.
                 On exit, the solution matrix X_l of each system in the batch.
@@ -12461,7 +12461,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zposv_batched(rocblas_handle handle,
     nrhs        rocblas_int. nrhs >= 0.
                 The number of right hand sides, that is, the number of columns
                 of all the matrices B_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the symmetric/Hermitian matrices A_l.
                 On exit, if info[l] = 0, the factor L_l or U_l of the Cholesky factorization of A_l returned by
@@ -12473,7 +12473,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zposv_batched(rocblas_handle handle,
     strideA     rocblas_stride.
                 Stride from the start of one matrix A_l to the next one A_(l+1).
                 There is no restriction for the value of strideA. The normal use case is strideA >= lda*n.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU (size depends on the value of strideB).
                 On entry, the right hand side matrices B_l.
                 On exit, the solution matrix X_l of each system in the batch.
@@ -12572,7 +12572,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zposv_strided_batched(rocblas_handle h
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the factor L or U of the Cholesky factorization of A returned by
                 \ref rocsolver_spotrf "POTRF".
@@ -12640,7 +12640,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotri(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the factor L_l or U_l of the Cholesky factorization of A_l returned by
                 \ref rocsolver_spotrf_batched "POTRF_BATCHED".
@@ -12715,7 +12715,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotri_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the factor L_l or U_l of the Cholesky factorization of A_l returned by
                 \ref rocsolver_spotrf_strided_batched "POTRF_STRIDED_BATCHED".
@@ -12841,7 +12841,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zpotri_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A.
                 On exit, if left_svect (or right_svect) is equal to overwrite,
@@ -13022,7 +13022,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesvd(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on
                 the GPU of dimension lda*n.
                 On entry, the matrices A_l.
@@ -13244,7 +13244,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesvd_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, if left_svect (or right_svect) is equal to
                 overwrite, the first columns (or rows) of A_l contain the left (or right)
@@ -13454,7 +13454,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesvd_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A.
                 On exit, the contents of A are destroyed.
@@ -13594,7 +13594,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesdd(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on
                 the GPU of dimension lda*n.
                 On entry, the matrices A_l.
@@ -13769,7 +13769,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesdd_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l.
                 On exit, the contents of A_l are destroyed.
@@ -13954,7 +13954,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesdd_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A.
                 On exit, the contents of A are destroyed.
@@ -14129,7 +14129,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesvdj(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on
                 the GPU of dimension lda*n.
                 On entry, the matrices A_l.
@@ -14339,7 +14339,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesvdj_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l.
                 On exit, the contents of A_l are destroyed.
@@ -14550,7 +14550,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesvdj_strided_batched(rocblas_handle
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A.
                 On exit, the contents of A are destroyed.
@@ -14746,7 +14746,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesvdx(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l.
                 On exit, the contents of A_l are destroyed.
@@ -14982,7 +14982,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesvdx_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l.
                 On exit, the contents of A_l are destroyed.
@@ -15219,7 +15219,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgesvdx_strided_batched(rocblas_handle
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -15303,7 +15303,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsytd2(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -15388,7 +15388,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhetd2(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -15496,7 +15496,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsytd2_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -15605,7 +15605,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhetd2_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -15719,7 +15719,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsytd2_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -15833,7 +15833,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhetd2_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -15917,7 +15917,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsytrd(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -16002,7 +16002,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhetrd(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -16110,7 +16110,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsytrd_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -16218,7 +16218,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhetrd_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -16332,7 +16332,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsytrd_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l to be factored.
                 On exit, if upper, then the elements on the diagonal and superdiagonal
@@ -16460,7 +16460,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhetrd_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the transformed matrix associated with
                 the equivalent standard eigenvalue problem.
@@ -16549,7 +16549,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygs2(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the transformed matrix associated with
                 the equivalent standard eigenvalue problem.
@@ -16639,7 +16639,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegs2(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the transformed matrices associated with
                 the equivalent standard eigenvalue problems.
@@ -16734,7 +16734,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygs2_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the transformed matrices associated with
                 the equivalent standard eigenvalue problems.
@@ -16829,7 +16829,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegs2_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the transformed matrices associated with
                 the equivalent standard eigenvalue problems.
@@ -16936,7 +16936,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygs2_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the transformed matrices associated with
                 the equivalent standard eigenvalue problems.
@@ -17043,7 +17043,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegs2_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the transformed matrix associated with
                 the equivalent standard eigenvalue problem.
@@ -17132,7 +17132,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygst(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the transformed matrix associated with
                 the equivalent standard eigenvalue problem.
@@ -17222,7 +17222,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegst(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the transformed matrices associated with
                 the equivalent standard eigenvalue problems.
@@ -17317,7 +17317,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygst_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the transformed matrices associated with
                 the equivalent standard eigenvalue problems.
@@ -17412,7 +17412,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegst_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the transformed matrices associated with
                 the equivalent standard eigenvalue problems.
@@ -17519,7 +17519,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygst_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the transformed matrices associated with
                 the equivalent standard eigenvalue problems.
@@ -17593,7 +17593,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegst_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the eigenvectors of A if they were computed and
                 the algorithm converged. Otherwise, the contents of A are destroyed.
@@ -17659,7 +17659,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyev(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the eigenvectors of A if they were computed and
                 the algorithm converged. Otherwise, the contents of A are destroyed.
@@ -17726,7 +17726,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheev(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -17810,7 +17810,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyev_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -17894,7 +17894,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheev_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -17984,7 +17984,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyev_strided_batched(rocblas_handle h
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -18075,7 +18075,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheev_strided_batched(rocblas_handle h
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the eigenvectors of A if they were computed and
                 the algorithm converged. Otherwise, the contents of A are destroyed.
@@ -18145,7 +18145,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevd(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the eigenvectors of A if they were computed and
                 the algorithm converged. Otherwise, the contents of A are destroyed.
@@ -18216,7 +18216,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevd(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -18304,7 +18304,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevd_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -18392,7 +18392,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevd_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -18486,7 +18486,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevd_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -18580,7 +18580,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevd_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the eigenvectors of A if they were computed and
                 the algorithm converged. Otherwise, the contents of A are destroyed.
@@ -18638,7 +18638,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevdj(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the eigenvectors of A if they were computed and
                 the algorithm converged. Otherwise, the contents of A are destroyed.
@@ -18696,7 +18696,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevdj(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -18765,7 +18765,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevdj_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -18834,7 +18834,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevdj_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -18909,7 +18909,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevdj_strided_batched(rocblas_handle
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -19006,14 +19006,14 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevdj_strided_batched(rocblas_handle
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the normalized matrix Z of eigenvectors if they were computed
                 and the algorithm converged. Otherwise, the contents of A are destroyed.
     @param[in]
     lda         rocblas_int. lda >= n.
                 Specifies the leading dimension of matrix A.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU of dimension ldb*n.
                 On entry, the symmetric positive definite matrix B. On exit,
                 the triangular factor of B as returned by \ref rocsolver_spotrf "POTRF".
@@ -19100,14 +19100,14 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvdj(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the normalized matrix Z of eigenvectors if they were computed
                 and the algorithm converged. Otherwise, the contents of A are destroyed.
     @param[in]
     lda         rocblas_int. lda >= n.
                 Specifies the leading dimension of matrix A.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU of dimension ldb*n.
                 On entry, the Hermitian positive definite matrix B. On exit,
                 the triangular factor of B as returned by \ref rocsolver_spotrf "POTRF".
@@ -19194,14 +19194,14 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvdj(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the normalized matrices Z_l of eigenvectors if they were computed
                 and the algorithm converged. Otherwise, the contents of A_l are destroyed.
     @param[in]
     lda         rocblas_int. lda >= n.
                 Specifies the leading dimension of matrices A_l.
-    @param[inout]
+    @param[in,out]
     B           array of pointers to type. Each pointer points to an array on the GPU of dimension ldb*n.
                 On entry, the symmetric positive definite matrices B_l. On exit,
                 the triangular factor of B_l as returned by \ref rocsolver_spotrf_batched "POTRF_BATCHED".
@@ -19299,14 +19299,14 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvdj_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the normalized matrices Z_l of eigenvectors if they were computed
                 and the algorithm converged. Otherwise, the contents of A_l are destroyed.
     @param[in]
     lda         rocblas_int. lda >= n.
                 Specifies the leading dimension of matrices A_l.
-    @param[inout]
+    @param[in,out]
     B           array of pointers to type. Each pointer points to an array on the GPU of dimension ldb*n.
                 On entry, the Hermitian positive definite matrices B_l. On exit,
                 the triangular factor of B_l as returned by \ref rocsolver_spotrf_batched "POTRF_BATCHED".
@@ -19404,7 +19404,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvdj_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the normalized matrices Z_l of eigenvectors if they were computed
                 and the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -19415,7 +19415,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvdj_batched(rocblas_handle handle,
     strideA     rocblas_stride.
                 Stride from the start of one matrix A_l to the next one A_(l+1).
                 There is no restriction for the value of strideA. Normal usage is strideA >= lda*n.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU (the size depends on the value of strideB).
                 On entry, the symmetric positive definite matrices B_l. On exit,
                 the triangular factor of B_l as returned by \ref rocsolver_spotrf_strided_batched "POTRF_STRIDED_BATCHED".
@@ -19521,7 +19521,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvdj_strided_batched(rocblas_handle
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the normalized matrices Z_l of eigenvectors if they were computed
                 and the algorithm converged. Otherwise, the contents of A_l are destroyed.
@@ -19532,7 +19532,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvdj_strided_batched(rocblas_handle
     strideA     rocblas_stride.
                 Stride from the start of one matrix A_l to the next one A_(l+1).
                 There is no restriction for the value of strideA. Normal usage is strideA >= lda*n.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU (the size depends on the value of strideB).
                 On entry, the Hermitian positive definite matrices B_l. On exit,
                 the triangular factor of B_l as returned by \ref rocsolver_spotrf_batched "POTRF_BATCHED".
@@ -19635,7 +19635,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvdj_strided_batched(rocblas_handle
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the eigenvectors of A if they were computed and
                 the algorithm converged. Otherwise, the contents of A are unchanged.
@@ -19735,7 +19735,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevj(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the eigenvectors of A if they were computed and
                 the algorithm converged. Otherwise, the contents of A are unchanged.
@@ -19835,7 +19835,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevj(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are unchanged.
@@ -19946,7 +19946,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevj_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are unchanged.
@@ -20057,7 +20057,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevj_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are unchanged.
@@ -20174,7 +20174,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevj_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the eigenvectors of A_l if they were computed and
                 the algorithm converged. Otherwise, the contents of A_l are unchanged.
@@ -20275,7 +20275,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevj_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the contents of A are destroyed.
     @param[in]
@@ -20399,7 +20399,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevx(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the contents of A are destroyed.
     @param[in]
@@ -20523,7 +20523,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevx(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -20664,7 +20664,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevx_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -20805,7 +20805,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevx_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -20958,7 +20958,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevx_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -21129,7 +21129,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevx_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the symmetric matrix A. On exit, if evect is original,
                 the normalized matrix Z of eigenvectors. If evect is none, then the upper or lower triangular
@@ -21237,7 +21237,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygv(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the Hermitian matrix A. On exit, if evect is original,
                 the normalized matrix Z of eigenvectors. If evect is none, then the upper or lower triangular
@@ -21345,7 +21345,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegv(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the symmetric matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -21470,7 +21470,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygv_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the Hermitian matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -21595,7 +21595,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegv_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the symmetric matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -21732,7 +21732,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygv_strided_batched(rocblas_handle h
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the Hermitian matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -21869,7 +21869,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegv_strided_batched(rocblas_handle h
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the symmetric matrix A. On exit, if evect is original,
                 the normalized matrix Z of eigenvectors. If evect is none, then the upper or lower triangular
@@ -21979,7 +21979,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvd(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the Hermitian matrix A. On exit, if evect is original,
                 the normalized matrix Z of eigenvectors. If evect is none, then the upper or lower triangular
@@ -22093,7 +22093,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvd(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the symmetric matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -22224,7 +22224,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvd_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the Hermitian matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -22355,7 +22355,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvd_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the symmetric matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -22498,7 +22498,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvd_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the Hermitian matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -22642,7 +22642,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvd_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the symmetric matrix A. On exit, if evect is original,
                 the normalized matrix Z of eigenvectors. If evect is none, then the upper or lower triangular
@@ -22765,7 +22765,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvj(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the Hermitian matrix A. On exit, if evect is original,
                 the normalized matrix Z of eigenvectors. If evect is none, then the upper or lower triangular
@@ -22884,7 +22884,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvj(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the symmetric matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -23014,7 +23014,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvj_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the Hermitian matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -23144,7 +23144,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvj_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the symmetric matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -23286,7 +23286,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvj_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the Hermitian matrices A_l. On exit, if evect is original,
                 the normalized matrix Z_l of eigenvectors. If evect is none, then the upper or lower triangular
@@ -23434,7 +23434,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvj_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the contents of A are destroyed.
     @param[in]
@@ -23599,7 +23599,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvx(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the contents of A are destroyed.
     @param[in]
@@ -23764,7 +23764,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvx(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -23946,7 +23946,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvx_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -24128,7 +24128,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvx_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -24328,7 +24328,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvx_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -25016,7 +25016,7 @@ ROCSOLVER_EXPORT rocblas_status
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the triangular matrix.
                 On exit, the inverse of A if info = 0.
@@ -25083,7 +25083,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_ztrtri(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the triangular matrices A_l.
                 On exit, the inverses of A_l if info[l] = 0.
@@ -25157,7 +25157,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_ztrtri_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the triangular matrices A_l.
                 On exit, the inverses of A_l if info[l] = 0.
@@ -25287,7 +25287,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_ztrtri_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the symmetric matrix A to be factored.
                 On exit, the block diagonal matrix D and the multipliers needed to
@@ -25413,7 +25413,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zsytf2(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the symmetric matrices A_l to be factored.
                 On exit, the block diagonal matrices D_l and the multipliers needed to
@@ -25554,7 +25554,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zsytf2_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the symmetric matrices A_l to be factored.
                 On exit, the block diagonal matrices D_l and the multipliers needed to
@@ -25703,7 +25703,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zsytf2_strided_batched(rocblas_handle 
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of the matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the symmetric matrix A to be factored.
                 On exit, the block diagonal matrix D and the multipliers needed to
@@ -25829,7 +25829,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zsytrf(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the symmetric matrices A_l to be factored.
                 On exit, the block diagonal matrices D_l and the multipliers needed to
@@ -25970,7 +25970,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zsytrf_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The number of rows and columns of all matrices A_l in the batch.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the symmetric matrices A_l to be factored.
                 On exit, the block diagonal matrices D_l and the multipliers needed to
@@ -26096,7 +26096,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zsytrf_strided_batched(rocblas_handle 
     @param[in]
     lda         rocblas_int. lda >= nb.
                 Specifies the leading dimension of blocks A_i.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU of dimension ldb*nb*nblocks.
                 On entry, contains the blocks B_i, arranged one after the other.
                 On exit, it is overwritten by blocks L_i in factorized form as returned by
@@ -26104,7 +26104,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zsytrf_strided_batched(rocblas_handle 
     @param[in]
     ldb         rocblas_int. ldb >= nb.
                 Specifies the leading dimension of blocks B_i.
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU of dimension ldc*nb*(nblocks-1).
                 On entry, contains the blocks C_i, arranged one after the other.
                 On exit, it is overwritten by blocks U_i.
@@ -26212,7 +26212,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeblttrf_npvt(rocblas_handle handle,
     @param[in]
     lda         rocblas_int. lda >= nb.
                 Specifies the leading dimension of blocks A_{li}.
-    @param[inout]
+    @param[in,out]
     B           array of pointers to type. Each pointer points to an array on the GPU of dimension
                 ldb*nb*nblocks.
                 On entry, contains the blocks B_{li}, arranged one after the other.
@@ -26221,7 +26221,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeblttrf_npvt(rocblas_handle handle,
     @param[in]
     ldb         rocblas_int. ldb >= nb.
                 Specifies the leading dimension of blocks B_{li}.
-    @param[inout]
+    @param[in,out]
     C           array of pointers to type. Each pointer points to an array on the GPU of dimension
                 ldc*nb*(nblocks-1).
                 On entry, contains the blocks C_{li}, arranged one after the other.
@@ -26341,7 +26341,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeblttrf_npvt_batched(rocblas_handle 
                 instance A_{(l+1)i}.
                 There is no restriction for the value of strideA. The normal use case is strideA >=
                 lda*nb*nblocks.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU (the size depends on the value of strideB).
                 On entry, contains the blocks B_{li}, arranged one after the other.
                 On exit, it is overwritten by blocks L_{li} in factorized form as returned by
@@ -26355,7 +26355,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeblttrf_npvt_batched(rocblas_handle 
                 instance B_{(l+1)i}.
                 There is no restriction for the value of strideB. The normal use case is strideB >=
                 ldb*nb*nblocks.
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU (the size depends on the value of strideC).
                 On entry, contains the blocks C_{li}, arranged one after the other.
                 On exit, it is overwritten by blocks U_{li}.
@@ -26501,7 +26501,7 @@ ROCSOLVER_EXPORT rocblas_status
                 instance A_{(l+1)i}.
                 There is no restriction for the value of strideA. The normal use cases are strideA >=
                 lda*nb*nblocks (strided batched case) or strideA = 1 (interleaved batched case).
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU (the size depends on the value of strideB).
                 On entry, contains the blocks B_{li}, arranged one after the other.
                 On exit, it is overwritten by blocks L_{li} in factorized form as returned by
@@ -26520,7 +26520,7 @@ ROCSOLVER_EXPORT rocblas_status
                 instance B_{(l+1)i}.
                 There is no restriction for the value of strideB. The normal use cases are strideB >=
                 ldb*nb*nblocks (strided batched case) or strideB = 1 (interleaved batched case).
-    @param[inout]
+    @param[in,out]
     C           pointer to type. Array on the GPU (the size depends on the value of strideC).
                 On entry, contains the blocks C_{li}, arranged one after the other.
                 On exit, it is overwritten by blocks U_{li}.
@@ -26685,7 +26685,7 @@ ROCSOLVER_EXPORT rocblas_status
     @param[in]
     ldc         rocblas_int. ldc >= nb.
                 Specifies the leading dimension of blocks C_i.
-    @param[inout]
+    @param[in,out]
     X           pointer to type. Array on the GPU of dimension ldx*nblocks*nrhs.
                 On entry, X contains the right-hand-side blocks R_i. It is overwritten by solution
                 vectors X_i on exit.
@@ -26811,7 +26811,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeblttrs_npvt(rocblas_handle handle,
     @param[in]
     ldc         rocblas_int. ldc >= nb.
                 Specifies the leading dimension of blocks C_{li}.
-    @param[inout]
+    @param[in,out]
     X           array of pointers to type. Each pointer points to an array on the GPU of dimension
                 ldx*nblocks*nrhs.
                 On entry, X contains the right-hand-side blocks R_{li}. It is overwritten by solution
@@ -26960,7 +26960,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zgeblttrs_npvt_batched(rocblas_handle 
                 instance C_{(l+1)i}.
                 There is no restriction for the value of strideC. The normal use case is strideC >=
                 ldc*nb*nblocks.
-    @param[inout]
+    @param[in,out]
     X           pointer to type. Array on the GPU (the size depends on the value of strideX).
                 On entry, X contains the right-hand-side blocks R_{li}. It is overwritten by solution
                 vectors X_{li} on exit.
@@ -27149,7 +27149,7 @@ ROCSOLVER_EXPORT rocblas_status
                 instance C_{(l+1)i}.
                 There is no restriction for the value of strideC. The normal use cases are strideC >=
                 ldc*nb*nblocks (strided batched case) or strideC = 1 (interleaved batched case).
-    @param[inout]
+    @param[in,out]
     X           pointer to type. Array on the GPU (the size depends on the value of strideX).
                 On entry, X contains the right-hand-side blocks R_{li}. It is overwritten by solution
                 vectors X_{li} on exit.
@@ -27913,7 +27913,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dcsrrf_refactchol(rocblas_handle handl
     pivQ        pointer to rocblas_int. Array on the GPU of dimension n.
                 Contains the pivot indices representing the permutation matrix Q, that is, the
                 order in which the columns of matrix A were rearranged.
-    @param[inout]
+    @param[in,out]
     B           pointer to type. Array on the GPU of dimension ldb*nrhs.
                 On entry the right hand side matrix B. On exit, the solution matrix X.
     @param[in]
@@ -27979,7 +27979,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dcsrrf_solve(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the contents of A are destroyed.
     @param[in]
@@ -28089,7 +28089,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevdx(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrix A.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the contents of A are destroyed.
     @param[in]
@@ -28199,7 +28199,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevdx(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -28320,7 +28320,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevdx_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -28441,7 +28441,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevdx_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -28574,7 +28574,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsyevdx_strided_batched(rocblas_handle
     @param[in]
     n           rocblas_int. n >= 0.
                 Number of rows and columns of matrices A_l.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -28732,7 +28732,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zheevdx_strided_batched(rocblas_handle
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the contents of A are destroyed.
     @param[in]
@@ -28882,7 +28882,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvdx(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU of dimension lda*n.
                 On entry, the matrix A. On exit, the contents of A are destroyed.
     @param[in]
@@ -29032,7 +29032,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvdx(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -29193,7 +29193,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvdx_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           Array of pointers to type. Each pointer points to an array on the GPU of dimension lda*n.
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -29354,7 +29354,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zhegvdx_batched(rocblas_handle handle,
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
@@ -29533,7 +29533,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dsygvdx_strided_batched(rocblas_handle
     @param[in]
     n           rocblas_int. n >= 0.
                 The matrix dimensions.
-    @param[inout]
+    @param[in,out]
     A           pointer to type. Array on the GPU (the size depends on the value of strideA).
                 On entry, the matrices A_l. On exit, the contents of A_l are destroyed.
     @param[in]
