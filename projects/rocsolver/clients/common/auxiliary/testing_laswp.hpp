@@ -1,5 +1,5 @@
 /* **************************************************************************
- * Copyright (C) 2020-2025 Advanced Micro Devices, Inc. All rights reserved.
+ * Copyright (C) 2020-2026 Advanced Micro Devices, Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -106,7 +106,7 @@ void laswp_initData(const rocblas_handle handle,
         // put indices in range [1, x]
         // for simplicity, consider x = lda as this is the number of rows
         for(rocblas_int i = 0; i < hIpiv.n(); ++i)
-            hIpiv[0][i] = hIpiv[0][i] * lda < 10 ? 1 : hIpiv[0][i] * lda / 10;
+            hIpiv[0][i] = hIpiv[0][i] * rocblas_max_nan(lda, <) * lda / 10;
     }
 
     if(GPU)
@@ -150,7 +150,7 @@ void laswp_getError(const rocblas_handle handle,
         for(int j = 0; j < n; j++)
         {
             diff = std::abs(hAr[0][i + j * lda] - hA[0][i + j * lda]);
-            *max_err = diff > *max_err ? diff : *max_err;
+            *max_err = rocblas_max_nan(diff, *max_err);
         }
     }
 }
