@@ -294,6 +294,7 @@ set(rocsolver_auxiliary_source
   # triangular matrices
   auxiliary/rocauxiliary_lauum.cpp
   # band matrices
+  auxiliary/rocauxiliary_ge2tb.cpp
   auxiliary/rocauxiliary_sy2sb_he2hb.cpp
 )
 
@@ -530,6 +531,9 @@ if(ROCSOLVER_ENABLE_EIGENSOLVERS_64)
 endif()
 if(ROCSOLVER_ENABLE_EIG_2STAGE)
   target_compile_definitions(rocsolver PRIVATE ROCSOLVER_ENABLE_EIG_2STAGE)
+endif()
+if(ROCSOLVER_ENABLE_SVD_2STAGE)
+  target_compile_definitions(rocsolver PRIVATE ROCSOLVER_ENABLE_SVD_2STAGE)
 endif()
 
 target_compile_definitions(rocsolver PRIVATE
