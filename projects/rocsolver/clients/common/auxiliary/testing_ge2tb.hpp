@@ -176,37 +176,114 @@ void ge2tb_getError(const rocblas_handle handle,
                     double* max_err)
 {
     using S = decltype(std::real(T{}));
+    constexpr bool COMPLEX = rocblas_is_complex<T>;
 
-    hipStream_t stream;
-    CHECK_ROCBLAS_ERROR(rocblas_get_stream(handle, &stream));
+    const rocblas_operation conjTrans
+        = COMPLEX ? rocblas_operation_conjugate_transpose : rocblas_operation_transpose;
 
-    // input data initialization
+    rocblas_int nQ = (rocblas_int)n; // number of left  reflectors (Q)
+    rocblas_int nP = std::max((rocblas_int)(n - kl), 0); // number of right reflectors (P)
+
+    // input data initialization: upload A_orig to dA, keep CPU copy in hA
     ge2tb_initData<true, true, T, I>(handle, m, n, dA, lda, hA);
 
-    // execute computations
-    // GPU lapack
-    CHECK_ROCBLAS_ERROR(rocsolver_ge2tb(handle, m, n, kl, nb, // opts
-                                        dA.data(), lda, // A
-                                        dAband.data(), ldab, // Aband
-                                        dTauQ.data(), // tauQ
-                                        dTauP.data())); // tauP
+    // Compute 1-norm of A_orig on the GPU before ge2tb overwrites it.
+    device_strided_batch_vector<S> dNorm(1, 1, 1, 1);
+    CHECK_HIP_ERROR(dNorm.memcheck());
+    CHECK_ROCBLAS_ERROR(rocsolver_lange(handle, rocsolver_norm_type_one, (rocblas_int)m, (rocblas_int)n,
+                                        dA.data(), (rocblas_int)lda, dNorm.data()));
+    host_strided_batch_vector<S> hNorm(1, 1, 1, 1);
+    CHECK_HIP_ERROR(hNorm.transfer_from(dNorm));
+    S A_norm = hNorm[0][0];
+
+    // Run GPU ge2tb; results land in dA (reflectors + upper triangle for P),
+    // dAband (band entries), dTauQ, dTauP.
+    CHECK_ROCBLAS_ERROR(rocsolver_ge2tb(handle, m, n, kl, nb, dA.data(), lda, dAband.data(), ldab,
+                                        dTauQ.data(), dTauP.data()));
     CHECK_HIP_ERROR(hARes.transfer_from(dA));
     CHECK_HIP_ERROR(hAbandRes.transfer_from(dAband));
     CHECK_HIP_ERROR(hTauQRes.transfer_from(dTauQ));
     CHECK_HIP_ERROR(hTauPRes.transfer_from(dTauP));
 
-    // CPU lapack reference
-    // TODO: add cpu_ge2tb when a suitable LAPACK reference is available.
-    // For now, verify only that the band structure is correct (entries outside
-    // band are zero) and that tauQ/tauP norms are finite.
+    // Implicit test: verify  Q^H * A_orig * P  equals the returned band matrix.
+    //
+    // Q is stored as a lower-trapezoidal matrix of Householder vectors below
+    // sub-diagonal kl in the output dA (column j: unit entry at row kl+j,
+    // nonzero below).  tauQ[j] is the corresponding scalar.
+    //
+    // P is stored as an upper-triangular matrix of Householder vectors in the
+    // upper triangle of dA (LQ storage: row j, unit at column j, nonzero
+    // to the right).  tauP[j] is the corresponding scalar.
+    //
+    // We compute X = Q^H * A_orig * P on the GPU, then compare to Aband:
+    //
+    //   Step 1: upload A_orig into a fresh device buffer dX.
+    //   Step 2: X <- Q^H * X  (left, ConjTrans, rows kl..m-1)
+    //           using rocsolver_ormxr_unmxr (blocked ormqr).
+    //   Step 3: X <- X * P   (right, NoTrans)
+    //           using rocsolver_ormlx_unmlx (blocked ormlq).
+    //   Step 4: transfer dX to CPU as hX.
+    //   Step 5: subtract Aband from the n x n upper block of hX, compute norms.
 
-    // error is ||hAband - hAbandRes|| / (n * ||hAband||)
-    // using frobenius norm
-    // (THIS DOES NOT ACCOUNT FOR NUMERICAL REPRODUCIBILITY
-    // ISSUES. IT MIGHT BE REVISITED IN THE FUTURE)
+    // Step 1
+    device_strided_batch_vector<T> dX(lda * n, 1, lda * n, 1);
+    CHECK_HIP_ERROR(dX.memcheck());
+    CHECK_HIP_ERROR(dX.transfer_from(hA));
 
-    // TODO: compare against cpu_ge2tb reference once available.
-    *max_err = 0;
+    // Step 2: X[kl:m, :] <- Q^H * X[kl:m, :]
+    CHECK_ROCBLAS_ERROR(rocsolver_ormxr_unmxr(true, // MQR=true -> blocked ormqr
+                                              handle, rocblas_side_left, conjTrans,
+                                              (rocblas_int)(m - kl), // rows of C
+                                              (rocblas_int)n, // cols of C
+                                              nQ, // number of reflectors
+                                              dA.data() + kl, // Q vectors (shifted past kl rows)
+                                              (rocblas_int)lda, dTauQ.data(),
+                                              dX.data() + kl, // C = X[kl:m, :]
+                                              (rocblas_int)lda));
+
+    // Step 3: X <- X * P
+    CHECK_ROCBLAS_ERROR(rocsolver_ormlx_unmlx(true, // MLQ=true -> blocked ormlq
+                                              handle, rocblas_side_right,
+                                              rocblas_operation_none,
+                                              (rocblas_int)m, // rows of X
+                                              (rocblas_int)n, // cols of X
+                                              nP, // number of reflectors
+                                              dA.data(), // P vectors (upper triangle, LQ)
+                                              (rocblas_int)lda, dTauP.data(),
+                                              dX.data(), // full m x n matrix
+                                              (rocblas_int)lda));
+
+    // Step 4
+    Th hX(lda * n, 1, lda * n, 1);
+    CHECK_HIP_ERROR(hX.transfer_from(dX));
+
+    // Step 5: error = || X[0:n,:] - Aband_dense ||_1 / (n * || A_orig ||_1)
+    //
+    // Aband_dense[j, i] = hAbandRes[ (kl-(i-j)) + i*ldab ]  for j in [i-kl, i].
+    //
+    // TODO: perform the subtraction X -= Aband_dense on the GPU.
+    S res_norm_1 = 0; // 1-norm: max column sum
+    for(rocblas_int i = 0; i < (rocblas_int)n; i++)
+    {
+        S col_sum = 0;
+        for(rocblas_int j = 0; j < (rocblas_int)n; j++)
+        {
+            T xij = hX[0][j + i * (rocblas_int)lda];
+            // subtract band entry if within bandwidth
+            if(j >= i - (rocblas_int)kl && j <= i)
+            {
+                rocblas_int br = (rocblas_int)kl - (i - j);
+                xij -= hAbandRes[0][br + i * (rocblas_int)ldab];
+            }
+            col_sum += std::abs(xij);
+        }
+        res_norm_1 = std::max(res_norm_1, col_sum);
+    }
+
+    double err = (double)res_norm_1 / (double)n;
+    if(A_norm != 0)
+        err /= (double)A_norm;
+    *max_err = err;
 }
 
 //------------------------------------------------------------------------------
