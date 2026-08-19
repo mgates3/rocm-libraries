@@ -136,31 +136,34 @@ void ge2tb_initData(const rocblas_handle handle, const I m, const I n, Td& dA, c
 // nb       -- outer blocksize to use
 //
 // ge2tb reduces A to upper triangular band form with kd superdiagonals:
-//      Q^H * A * P = Aband
+//      Q^H * A * Phat = Aband
 // Q is m-by-n (left factor, Householder vectors in lower trapezoid of A).
+// Phat = [ I 0 ]
+//        [ 0 P ]
+// where I is kd-by-kd, and
 // P is (n-kd)-by-(n-kd) (right factor, Householder vectors above superdiag kd in A).
 //
 // dA       -- matrix on GPU, lda-by-n, lda >= m
 // dAband   -- output band matrix on GPU, ldab-by-n, ldab >= kd + 1
-// dTauQ    -- output left  Householder taus on GPU, length n
-// dTauP    -- output right Householder taus on GPU, length n - kd
+// dTauQ    -- output left  Householder tau values on GPU, length n
+// dTauP    -- output right Householder tau values on GPU, length n - kd
 // dQ       -- scratch m-by-n matrix on GPU; holds explicit Q or P (ldq >= m)
 // dR       -- scratch n-by-n matrix on GPU for I - Q^H Q or I - P^H P (ldr >= n)
 // dnorm    -- scratch length-1 device buffer for norms
 //
 // hARes    -- output matrix on CPU to copy GPU result, lda-by-n
 // hAbandRes-- output band matrix on CPU to copy GPU result, ldab-by-n
-// hTauQRes -- output left  taus on CPU to copy GPU result, length n
-// hTauPRes -- output right taus on CPU to copy GPU result, length n - kd
+// hTauQRes -- output left  tau values on CPU to copy GPU result, length n
+// hTauPRes -- output right tau values on CPU to copy GPU result, length n - kd
 //
 // hA       -- matrix on CPU, lda-by-n, lda >= m
 // hAband   -- output band matrix on CPU, ldab-by-n, ldab >= kd + 1
-// hTauQ    -- output left  taus on CPU, length n
-// hTauP    -- output right taus on CPU, length n - kd
+// hTauQ    -- output left  tau values on CPU, length n
+// hTauP    -- output right tau values on CPU, length n - kd
 //
-// errors[0] -- || Q^H A_orig P - Aband ||_1 / (n * || A_orig ||_1)
-// errors[1] -- || I_n - Q^H Q ||_1 / n    (Q is m-by-n reduced)
-// errors[2] -- || I_{n-kd} - P^H P ||_1 / (n-kd)   (P is (n-kd)-by-(n-kd))
+// errors[0] -- || Q^H A_orig P - Aband ||_1 / (m * || A_orig ||_1)
+// errors[1] -- || I - Q^H Q ||_1 / m
+// errors[2] -- || I - P^H P ||_1 / (n-kd)
 //
 template <typename T, typename I, typename Td, typename Th, typename Sd, typename Sh>
 void ge2tb_getError(const rocblas_handle handle,
@@ -201,9 +204,6 @@ void ge2tb_getError(const rocblas_handle handle,
     const T negone = -1;
     const T zero = 0;
     const rocblas_stride stride = 0;
-
-    const rocblas_operation conjTrans
-        = COMPLEX ? rocblas_operation_conjugate_transpose : rocblas_operation_transpose;
 
     rocblas_int nQ = (rocblas_int)n; // number of left  reflectors (Q), length of tauQ
     rocblas_int nP = std::max((rocblas_int)(n - kd), 0); // number of right reflectors (P), length of tauP
@@ -247,7 +247,7 @@ void ge2tb_getError(const rocblas_handle handle,
 
     // Step 2: dR <- Q^H * dR  (Q acts on all m rows)
     CHECK_ROCBLAS_ERROR(rocsolver_ormxr_unmxr(true, // MQR=true -> blocked ormqr
-                                              handle, rocblas_side_left, conjTrans,
+                                              handle, rocblas_side_left, rocblas_operation_conjugate_transpose,
                                               (rocblas_int)m, // rows of C
                                               (rocblas_int)n, // cols of C
                                               nQ, // number of reflectors
@@ -259,6 +259,7 @@ void ge2tb_getError(const rocblas_handle handle,
     // Step 3: dR[0:m, kd:n] <- dR[0:m, kd:n] * P
     // P acts on the last n-kd columns.  Reflectors stored at dA + kd*lda (col kd, row 0).
     if(nP > 0)
+    {
         CHECK_ROCBLAS_ERROR(rocsolver_ormlx_unmlx(true, // MLQ=true -> blocked ormlq
                                                   handle, rocblas_side_right,
                                                   rocblas_operation_none,
@@ -269,6 +270,7 @@ void ge2tb_getError(const rocblas_handle handle,
                                                   (rocblas_int)lda, dTauP.data(),
                                                   dR.data() + (rocblas_int)kd * (rocblas_int)ldr,
                                                   (rocblas_int)ldr));
+    }
 
     // Step 4: transfer to CPU, subtract Aband (upper band), compute 1-norm manually.
     //
@@ -295,16 +297,17 @@ void ge2tb_getError(const rocblas_handle handle,
         }
         res_norm_1 = std::max(res_norm_1, col_sum);
     }
-    errors[0] = (double)res_norm_1 / (double)n;
+    // TODO: m, n, or max(m, n)?
+    errors[0] = res_norm_1 / m;
     if(A_norm != 0)
-        errors[0] /= (double)A_norm;
+        errors[0] /= A_norm;
 
     //--------------------
-    // Check 1: || I_n - Q^H Q ||_1 / n
+    // Check 1: || I - Q^H Q ||_1 / m
     //
     // Q is m-by-n; Householder vectors in the lower trapezoid of dA (column j
-    // has unit entry at row j, nonzero below).  Generate explicit Q via ungqr:
-    //   copy dA into dQ, then call orgxr_ungxr(m, n, nQ, dQ, ldq, dTauQ).
+    // has unit entry at row j, nonzero below). Generate explicit Q via ungqr:
+    // copy dA into dQ, then call orgxr_ungxr(m, n, nQ, dQ, ldq, dTauQ).
     CHECK_HIP_ERROR(dQ.transfer_from(hA)); // dQ = A_orig (reflectors intact)
     CHECK_ROCBLAS_ERROR(rocsolver_orgxr_ungxr(true, // GQR=true -> blocked ungqr
                                               handle,
@@ -320,10 +323,10 @@ void ge2tb_getError(const rocblas_handle handle,
             hIdentN[0][i + j * (rocblas_int)ldr] = (i == j) ? one : zero;
     CHECK_HIP_ERROR(dR.transfer_from(hIdentN));
 
-    // dR = I_n - Q^H Q
+    // dR = I - Q^H Q
     T alpha_neg = negone, beta_one = one;
     CHECK_ROCBLAS_ERROR(rocsolver_gemm(false, handle,
-                                       conjTrans, rocblas_operation_none,
+                                       rocblas_operation_conjugate_transpose, rocblas_operation_none,
                                        (rocblas_int)n, (rocblas_int)n, (rocblas_int)m,
                                        &alpha_neg, dQ.data(), (rocblas_int)ldq, stride,
                                        dQ.data(), (rocblas_int)ldq, stride,
@@ -332,10 +335,10 @@ void ge2tb_getError(const rocblas_handle handle,
                                         (rocblas_int)n, (rocblas_int)n,
                                         dR.data(), (rocblas_int)ldr, dnorm.data()));
     CHECK_HIP_ERROR(hnorm.transfer_from(dnorm));
-    errors[1] = (double)hnorm[0][0] / (double)n;
+    errors[1] = hnorm[0][0] / m;
 
     //--------------------
-    // Check 2: || I_{n-kd} - P^H P ||_1 / (n-kd)
+    // Check 2: || I - P^H P ||_1 / (n-kd)
     //
     // P is (n-kd)-by-(n-kd), stored as LQ reflectors in rows 0..nP-1,
     // cols kd..n-1 of dA (i.e., the block at dA + kd*lda).
@@ -366,7 +369,7 @@ void ge2tb_getError(const rocblas_handle handle,
 
         // dR = I_{nP} - P^H P
         CHECK_ROCBLAS_ERROR(rocsolver_gemm(false, handle,
-                                           conjTrans, rocblas_operation_none,
+                                           rocblas_operation_conjugate_transpose, rocblas_operation_none,
                                            nP, nP, nP,
                                            &alpha_neg, dQ.data(), (rocblas_int)ldq, stride,
                                            dQ.data(), (rocblas_int)ldq, stride,
@@ -374,7 +377,7 @@ void ge2tb_getError(const rocblas_handle handle,
         CHECK_ROCBLAS_ERROR(rocsolver_lange(handle, rocsolver_norm_type_one,
                                             nP, nP, dR.data(), (rocblas_int)ldr, dnorm.data()));
         CHECK_HIP_ERROR(hnorm.transfer_from(dnorm));
-        errors[2] = (double)hnorm[0][0] / nP;
+        errors[2] = hnorm[0][0] / nP;
     }
     else
     {
@@ -418,11 +421,8 @@ void ge2tb_getPerfData(const rocblas_handle handle,
 
     ge2tb_initData<true, false, T, I>(handle, m, n, dA, lda, hA);
 
-    if(!perf)
-    {
-        // TODO: cpu_ge2tb reference timing once available.
-        *cpu_time_used = nan("");
-    }
+    // TODO: cpu_ge2tb reference timing once available.
+    *cpu_time_used = 0;
 
     // cold calls
     for(int iter = 0; iter < 2; iter++)
@@ -635,14 +635,15 @@ void testing_ge2tb(Arguments& argus)
             rocsolver_bench_header("Results:");
             if(argus.norm_check)
             {
-                rocsolver_bench_output("cpu_time_us", "gpu_time_us",
-                                       "berror Q^H*A*P-B", "ortho I-Q^HQ", "ortho I-P^HP");
-                rocsolver_bench_output(cpu_time_used, gpu_time_used, errors[0], errors[1], errors[2]);
+                // cpu_time_us not available
+                rocsolver_bench_output("gpu_time_us",
+                                       "berror Q^H A P-B", "ortho I-Q^H Q", "ortho I-P^H P");
+                rocsolver_bench_output(gpu_time_used, errors[0], errors[1], errors[2]);
             }
             else
             {
-                rocsolver_bench_output("cpu_time_us", "gpu_time_us");
-                rocsolver_bench_output(cpu_time_used, gpu_time_used);
+                rocsolver_bench_output("gpu_time_us");
+                rocsolver_bench_output(gpu_time_used);
             }
             rocsolver_bench_endl();
         }

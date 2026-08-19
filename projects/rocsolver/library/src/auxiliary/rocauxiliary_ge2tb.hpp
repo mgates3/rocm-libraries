@@ -140,11 +140,12 @@ rocblas_status rocsolver_ge2tb_argCheck(rocblas_handle handle,
 // band matrix with kd superdiagonals via unitary transformations:
 //      Q^H A P = A_band
 // where Q is m-by-m unitary and P is n-by-n unitary.
+// The kd-by-kd upper-left portion of P is the Identity.
 //
-// Left  Householder reflectors (for Q) are stored in the lower trapezoid of A.
-// Right Householder reflectors (for P) are stored above superdiagonal kd in A.
-// tauQ holds the left  Householder tau values, length n.
-// tauP holds the right Householder tau values, length n - kd.
+// Householder reflectors for Q are stored in the lower trapezoid of A.
+// Householder reflectors for P are stored above superdiagonal kd in A.
+// tauQ holds the Householder tau values for Q, length n.
+// tauP holds the Householder tau values for P, length n - kd.
 //
 template <bool BATCHED, bool STRIDED, typename T, typename I, typename U>
 rocblas_status rocsolver_ge2tb_template(rocblas_handle handle,

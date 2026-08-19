@@ -41,16 +41,15 @@ ROCSOLVER_BEGIN_NAMESPACE
 //  kd          Upper bandwidth. kd >= 1.
 //  nb          Block size. nb >= kd and nb is a multiple of kd.
 //  A           m-by-n general matrix.
-//              On output, left Householder vectors Q overwrite the portion of A
-//              in the lower trapezoid of A; right Householder vectors P overwrite
-//              the portion of A above superdiagonal kd.
-//              The rest of A is destroyed.
+//              On output, Householder vectors for Q overwrite the lower
+//              trapezoid of A; Householder vectors for P overwrite A above
+//              superdiagonal kd. The rest of A is destroyed.
 //  lda         Leading dimension of A. lda >= m.
 //  Aband       Band matrix storage, ldab-by-n. On output the main diagonal and
 //              kd superdiagonals are set; other entries are destroyed.
 //  ldab        Leading dimension of Aband. ldab >= kd + 1.
-//  tauQ        Left  Householder tau values, length n.
-//  tauP        Right Householder tau values, length n - kd.
+//  tauQ        Householder tau values for Q, length n.
+//  tauP        Householder tau values for P, length n - kd.
 //
 template <typename T, typename I, typename U>
 rocblas_status rocsolver_ge2tb_impl(rocblas_handle handle,
