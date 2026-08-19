@@ -39,9 +39,9 @@ using ge2tb_tuple = std::tuple<vector<I>, vector<I>>;
 // each matrix_size_range is a {m, n, lda}
 // m >= n is required; lda >= m
 
-// each blk_range is a {kl, nb}
+// each blk_range is a {kd, nb}
 
-// case when m = 0, n = 0, kl = 0 will also execute the bad arguments test
+// case when m = 0, n = 0, kd = 0 will also execute the bad arguments test
 // (null handle, null pointers and invalid values)
 
 // for checkin_lapack tests
@@ -119,7 +119,7 @@ Arguments ge2tb_setup_arguments(ge2tb_tuple<I> tup)
     arg.set<I>("m", size[0]);
     arg.set<I>("n", size[1]);
     arg.set<I>("lda", size[2]);
-    arg.set<I>("kl", blk[0]);
+    arg.set<I>("kd", blk[0]);
     arg.set<I>("nb", blk[1]);
 
     arg.timing = 0;
@@ -141,7 +141,7 @@ protected:
     {
         Arguments arg = ge2tb_setup_arguments(this->GetParam());
 
-        if(arg.peek<I>("m") == 0 && arg.peek<I>("n") == 0 && arg.peek<I>("kl") == 0)
+        if(arg.peek<I>("m") == 0 && arg.peek<I>("n") == 0 && arg.peek<I>("kd") == 0)
             testing_ge2tb_bad_arg<T, I>();
 
         testing_ge2tb<T, I>(arg);

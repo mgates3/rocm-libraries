@@ -377,7 +377,7 @@ rocblas_status rocsolver_zgemm_strided_batched(rocblas_handle handle,
 rocblas_status rocsolver_sge2tb(rocblas_handle handle,
                                 const rocblas_int m,
                                 const rocblas_int n,
-                                const rocblas_int kl,
+                                const rocblas_int kd,
                                 const rocblas_int nb,
                                 float* A,
                                 const rocblas_int lda,
@@ -389,7 +389,7 @@ rocblas_status rocsolver_sge2tb(rocblas_handle handle,
 rocblas_status rocsolver_dge2tb(rocblas_handle handle,
                                 const rocblas_int m,
                                 const rocblas_int n,
-                                const rocblas_int kl,
+                                const rocblas_int kd,
                                 const rocblas_int nb,
                                 double* A,
                                 const rocblas_int lda,
@@ -401,7 +401,7 @@ rocblas_status rocsolver_dge2tb(rocblas_handle handle,
 rocblas_status rocsolver_cge2tb(rocblas_handle handle,
                                 const rocblas_int m,
                                 const rocblas_int n,
-                                const rocblas_int kl,
+                                const rocblas_int kd,
                                 const rocblas_int nb,
                                 rocblas_float_complex* A,
                                 const rocblas_int lda,
@@ -413,7 +413,7 @@ rocblas_status rocsolver_cge2tb(rocblas_handle handle,
 rocblas_status rocsolver_zge2tb(rocblas_handle handle,
                                 const rocblas_int m,
                                 const rocblas_int n,
-                                const rocblas_int kl,
+                                const rocblas_int kd,
                                 const rocblas_int nb,
                                 rocblas_double_complex* A,
                                 const rocblas_int lda,
@@ -425,7 +425,7 @@ rocblas_status rocsolver_zge2tb(rocblas_handle handle,
 rocblas_status rocsolver_sge2tb_64(rocblas_handle handle,
                                    const int64_t m,
                                    const int64_t n,
-                                   const int64_t kl,
+                                   const int64_t kd,
                                    const int64_t nb,
                                    float* A,
                                    const int64_t lda,
@@ -437,7 +437,7 @@ rocblas_status rocsolver_sge2tb_64(rocblas_handle handle,
 rocblas_status rocsolver_dge2tb_64(rocblas_handle handle,
                                    const int64_t m,
                                    const int64_t n,
-                                   const int64_t kl,
+                                   const int64_t kd,
                                    const int64_t nb,
                                    double* A,
                                    const int64_t lda,
@@ -449,7 +449,7 @@ rocblas_status rocsolver_dge2tb_64(rocblas_handle handle,
 rocblas_status rocsolver_cge2tb_64(rocblas_handle handle,
                                    const int64_t m,
                                    const int64_t n,
-                                   const int64_t kl,
+                                   const int64_t kd,
                                    const int64_t nb,
                                    rocblas_float_complex* A,
                                    const int64_t lda,
@@ -461,7 +461,7 @@ rocblas_status rocsolver_cge2tb_64(rocblas_handle handle,
 rocblas_status rocsolver_zge2tb_64(rocblas_handle handle,
                                    const int64_t m,
                                    const int64_t n,
-                                   const int64_t kl,
+                                   const int64_t kd,
                                    const int64_t nb,
                                    rocblas_double_complex* A,
                                    const int64_t lda,
@@ -2735,7 +2735,7 @@ inline rocblas_status rocsolver_lahr2(rocblas_handle handle,
 inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       const rocblas_int m,
                                       const rocblas_int n,
-                                      const rocblas_int kl,
+                                      const rocblas_int kd,
                                       const rocblas_int nb,
                                       float* A,
                                       const rocblas_int lda,
@@ -2744,13 +2744,13 @@ inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       float* tauQ,
                                       float* tauP)
 {
-    return rocsolver_sge2tb(handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+    return rocsolver_sge2tb(handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 }
 
 inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       const rocblas_int m,
                                       const rocblas_int n,
-                                      const rocblas_int kl,
+                                      const rocblas_int kd,
                                       const rocblas_int nb,
                                       double* A,
                                       const rocblas_int lda,
@@ -2759,13 +2759,13 @@ inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       double* tauQ,
                                       double* tauP)
 {
-    return rocsolver_dge2tb(handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+    return rocsolver_dge2tb(handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 }
 
 inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       const rocblas_int m,
                                       const rocblas_int n,
-                                      const rocblas_int kl,
+                                      const rocblas_int kd,
                                       const rocblas_int nb,
                                       rocblas_float_complex* A,
                                       const rocblas_int lda,
@@ -2774,13 +2774,13 @@ inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       rocblas_float_complex* tauQ,
                                       rocblas_float_complex* tauP)
 {
-    return rocsolver_cge2tb(handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+    return rocsolver_cge2tb(handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 }
 
 inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       const rocblas_int m,
                                       const rocblas_int n,
-                                      const rocblas_int kl,
+                                      const rocblas_int kd,
                                       const rocblas_int nb,
                                       rocblas_double_complex* A,
                                       const rocblas_int lda,
@@ -2789,13 +2789,13 @@ inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       rocblas_double_complex* tauQ,
                                       rocblas_double_complex* tauP)
 {
-    return rocsolver_zge2tb(handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+    return rocsolver_zge2tb(handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 }
 
 inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       const int64_t m,
                                       const int64_t n,
-                                      const int64_t kl,
+                                      const int64_t kd,
                                       const int64_t nb,
                                       float* A,
                                       const int64_t lda,
@@ -2804,13 +2804,13 @@ inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       float* tauQ,
                                       float* tauP)
 {
-    return rocsolver_sge2tb_64(handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+    return rocsolver_sge2tb_64(handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 }
 
 inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       const int64_t m,
                                       const int64_t n,
-                                      const int64_t kl,
+                                      const int64_t kd,
                                       const int64_t nb,
                                       double* A,
                                       const int64_t lda,
@@ -2819,13 +2819,13 @@ inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       double* tauQ,
                                       double* tauP)
 {
-    return rocsolver_dge2tb_64(handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+    return rocsolver_dge2tb_64(handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 }
 
 inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       const int64_t m,
                                       const int64_t n,
-                                      const int64_t kl,
+                                      const int64_t kd,
                                       const int64_t nb,
                                       rocblas_float_complex* A,
                                       const int64_t lda,
@@ -2834,13 +2834,13 @@ inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       rocblas_float_complex* tauQ,
                                       rocblas_float_complex* tauP)
 {
-    return rocsolver_cge2tb_64(handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+    return rocsolver_cge2tb_64(handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 }
 
 inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       const int64_t m,
                                       const int64_t n,
-                                      const int64_t kl,
+                                      const int64_t kd,
                                       const int64_t nb,
                                       rocblas_double_complex* A,
                                       const int64_t lda,
@@ -2849,7 +2849,7 @@ inline rocblas_status rocsolver_ge2tb(rocblas_handle handle,
                                       rocblas_double_complex* tauQ,
                                       rocblas_double_complex* tauP)
 {
-    return rocsolver_zge2tb_64(handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+    return rocsolver_zge2tb_64(handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 }
 /***************************************************************/
 

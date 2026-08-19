@@ -40,7 +40,7 @@ ROCSOLVER_BEGIN_NAMESPACE
 template <bool BATCHED, typename T, typename I>
 void rocsolver_ge2tb_getMemorySize(const I m,
                                    const I n,
-                                   const I kl,
+                                   const I kd,
                                    const I nb,
                                    const I batch_count,
                                    size_t* size_scalars,
@@ -62,7 +62,7 @@ void rocsolver_ge2tb_getMemorySize(const I m,
     *size_workArr = 0;
 
     // if quick return no workspace needed
-    if(n == 0 || m == 0 || batch_count == 0 || kl >= n - 1)
+    if(n == 0 || m == 0 || batch_count == 0 || kd >= n - 1)
         return;
 
     // TODO: compute workspace sizes for geqrf/gerqf calls and working arrays
@@ -80,7 +80,7 @@ void rocsolver_ge2tb_getMemorySize(const I m,
     size_t w, wa, s1, s2;
 
     // extra space for geqrf calls (left reflectors)
-    rocsolver_geqrf_getMemorySize<BATCHED, T>(m - kl, kl, batch_count, size_scalars, &w, &s1, &s2,
+    rocsolver_geqrf_getMemorySize<BATCHED, T>(m - kd, kd, batch_count, size_scalars, &w, &s1, &s2,
                                               &wa);
     *size_D = std::max(*size_D, s1);
     *size_Z = std::max(*size_Z, s2);
@@ -88,7 +88,7 @@ void rocsolver_ge2tb_getMemorySize(const I m,
     *size_workArr = std::max(*size_workArr, wa);
 
     // extra space for larft calls
-    rocsolver_larft_getMemorySize<BATCHED, T>(m - kl, nb, batch_count, size_scalars, &w, &wa);
+    rocsolver_larft_getMemorySize<BATCHED, T>(m - kd, nb, batch_count, size_scalars, &w, &wa);
     *size_work = std::max(*size_work, w);
     *size_workArr = std::max(*size_workArr, wa);
 }
@@ -98,7 +98,7 @@ template <typename T, typename I, typename U>
 rocblas_status rocsolver_ge2tb_argCheck(rocblas_handle handle,
                                         const I m,
                                         const I n,
-                                        const I kl,
+                                        const I kd,
                                         const I nb,
                                         U A,
                                         const I lda,
@@ -111,9 +111,9 @@ rocblas_status rocsolver_ge2tb_argCheck(rocblas_handle handle,
     // order is important for unit tests:
 
     // 1. invalid size
-    // m >= n is assumed for now; kl >= 1; nb >= kl and multiple of kl;
-    // lda >= m; ldab >= 2*kl + 1 (band storage: kl sub-diags + diag, with extra for 2nd stage)
-    if(m < 0 || n < 0 || m < n || kl < 1 || nb < kl || nb % kl != 0 || lda < m || ldab < 2 * kl + 1
+    // m >= n is assumed for now; kd >= 1; nb >= kd and multiple of kd;
+    // lda >= m; ldab >= kd + 1 (band storage: kd superdiags + diag)
+    if(m < 0 || n < 0 || m < n || kd < 1 || nb < kd || nb % kd != 0 || lda < m || ldab < kd + 1
        || batch_count < 0)
         return rocblas_status_invalid_size;
 
@@ -136,21 +136,21 @@ rocblas_status rocsolver_ge2tb_argCheck(rocblas_handle handle,
 // Implements ge2tb. See rocsolver_ge2tb_impl.
 // scalars, D, V, W, X, Z, work, workArr are workspaces.
 //
-// Reduces an m-by-n general matrix A (m >= n) to an n-by-n lower triangular
-// band matrix with kl sub-diagonals via unitary transformations:
+// Reduces an m-by-n general matrix A (m >= n) to an n-by-n upper triangular
+// band matrix with kd superdiagonals via unitary transformations:
 //      Q^H A P = A_band
 // where Q is m-by-m unitary and P is n-by-n unitary.
 //
-// Left  Householder reflectors (for Q) are stored below sub-diagonal kl in A.
-// Right Householder reflectors (for P) are stored above the main diagonal in A.
+// Left  Householder reflectors (for Q) are stored in the lower trapezoid of A.
+// Right Householder reflectors (for P) are stored above superdiagonal kd in A.
 // tauQ holds the left  Householder tau values, length n.
-// tauP holds the right Householder tau values, length n - kl.
+// tauP holds the right Householder tau values, length n - kd.
 //
 template <bool BATCHED, bool STRIDED, typename T, typename I, typename U>
 rocblas_status rocsolver_ge2tb_template(rocblas_handle handle,
                                         const I m,
                                         const I n,
-                                        const I kl,
+                                        const I kd,
                                         const I nb,
                                         U A,
                                         const I shiftA,
@@ -173,7 +173,7 @@ rocblas_status rocsolver_ge2tb_template(rocblas_handle handle,
                                         T* work,
                                         T** workArr)
 {
-    ROCSOLVER_ENTER("ge2tb", "m:", m, "n:", n, "kl:", kl, "nb:", nb, "shiftA:", shiftA, "lda:", lda,
+    ROCSOLVER_ENTER("ge2tb", "m:", m, "n:", n, "kd:", kd, "nb:", nb, "shiftA:", shiftA, "lda:", lda,
                     "ldab:", ldab, "bc:", batch_count);
 
     // quick return
@@ -190,11 +190,11 @@ rocblas_status rocsolver_ge2tb_template(rocblas_handle handle,
     // Zero out Aband.
     // Loop over outer blocks of size nb columns:
     //   Copy panel to working array V.
-    //   Inner loop over kl-width sub-panels:
+    //   Inner loop over kd-width sub-panels:
     //     Apply accumulated updates from previous sub-panels to V.
     //     Factor sub-panel with geqrf (left reflectors, stored in V and tauQ).
     //     Apply right reflectors (gerqf or gelqf) to zero entries above
-    //       the main diagonal, updating tauP.
+    //       the superdiagonal, updating tauP.
     //     Copy band entries (diagonal tile + R factor) to Aband.
     //     Form compact WY representation T = larft(V, tauQ).
     //     Compute W = V T.

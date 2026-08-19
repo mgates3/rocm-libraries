@@ -31,32 +31,32 @@
 ROCSOLVER_BEGIN_NAMESPACE
 
 //------------------------------------------------------------------------------
-// Reduces an m-by-n general matrix A (m >= n) to an n-by-n lower triangular
-// band matrix with kl sub-diagonals, via unitary transformations:
+// Reduces an m-by-n general matrix A (m >= n) to an n-by-n upper triangular
+// band matrix with kd superdiagonals, via unitary transformations:
 //      Q^H A P = A_band.
 //
 //  handle      rocblas_handle.
 //  m           Number of rows. m >= n >= 0.
 //  n           Number of columns. n >= 0.
-//  kl          Lower bandwidth. kl >= 1.
-//  nb          Block size. nb >= kl and nb is a multiple of kl.
+//  kd          Upper bandwidth. kd >= 1.
+//  nb          Block size. nb >= kd and nb is a multiple of kd.
 //  A           m-by-n general matrix.
 //              On output, left Householder vectors Q overwrite the portion of A
-//              below sub-diagonal kl; right Householder vectors P overwrite
-//              the portion of A above the main diagonal.
+//              in the lower trapezoid of A; right Householder vectors P overwrite
+//              the portion of A above superdiagonal kd.
 //              The rest of A is destroyed.
 //  lda         Leading dimension of A. lda >= m.
 //  Aband       Band matrix storage, ldab-by-n. On output the main diagonal and
-//              kl sub-diagonals are set; other entries are destroyed.
-//  ldab        Leading dimension of Aband. ldab >= 2*kl + 1.
+//              kd superdiagonals are set; other entries are destroyed.
+//  ldab        Leading dimension of Aband. ldab >= kd + 1.
 //  tauQ        Left  Householder tau values, length n.
-//  tauP        Right Householder tau values, length n - kl.
+//  tauP        Right Householder tau values, length n - kd.
 //
 template <typename T, typename I, typename U>
 rocblas_status rocsolver_ge2tb_impl(rocblas_handle handle,
                                     const I m,
                                     const I n,
-                                    const I kl,
+                                    const I kd,
                                     const I nb,
                                     U A,
                                     const I lda,
@@ -66,7 +66,7 @@ rocblas_status rocsolver_ge2tb_impl(rocblas_handle handle,
                                     T* tauP)
 try
 {
-    ROCSOLVER_ENTER_TOP("ge2tb", "-m", m, "-n", n, "-kl", kl, "-nb", nb, "--lda", lda, "--ldab",
+    ROCSOLVER_ENTER_TOP("ge2tb", "-m", m, "-n", n, "-kd", kd, "-nb", nb, "--lda", lda, "--ldab",
                         ldab);
 
     if(!handle)
@@ -74,7 +74,7 @@ try
 
     // argument checking
     rocblas_status st
-        = rocsolver_ge2tb_argCheck(handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+        = rocsolver_ge2tb_argCheck(handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
     if(st != rocblas_status_continue)
         return st;
 
@@ -95,7 +95,7 @@ try
     size_t size_workArr;
     // extra requirements
     size_t size_D, size_V, size_W, size_X, size_Z, size_work;
-    rocsolver_ge2tb_getMemorySize<false, T, I>(m, n, kl, nb, batch_count, &size_scalars, &size_D,
+    rocsolver_ge2tb_getMemorySize<false, T, I>(m, n, kd, nb, batch_count, &size_scalars, &size_D,
                                                &size_V, &size_W, &size_X, &size_Z, &size_work,
                                                &size_workArr);
 
@@ -124,7 +124,7 @@ try
         init_scalars(handle, scalars);
 
     // execution
-    return rocsolver_ge2tb_template<false, false, T, I>(handle, m, n, kl, nb, // opts
+    return rocsolver_ge2tb_template<false, false, T, I>(handle, m, n, kd, nb, // opts
                                                         A, shiftA, lda, strideA, // A
                                                         Aband, ldab, strideAb, // Aband
                                                         tauQ, strideTauQ, // tauQ
@@ -150,7 +150,7 @@ extern "C" {
 ROCSOLVER_EXPORT rocblas_status rocsolver_sge2tb(rocblas_handle handle,
                                                  const rocblas_int m,
                                                  const rocblas_int n,
-                                                 const rocblas_int kl,
+                                                 const rocblas_int kd,
                                                  const rocblas_int nb,
                                                  float* A,
                                                  const rocblas_int lda,
@@ -160,7 +160,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_sge2tb(rocblas_handle handle,
                                                  float* tauP)
 {
 #ifdef ROCSOLVER_ENABLE_SVD_2STAGE
-    return rocsolver::rocsolver_ge2tb_impl<float, rocblas_int>(handle, m, n, kl, nb, A, lda, Aband,
+    return rocsolver::rocsolver_ge2tb_impl<float, rocblas_int>(handle, m, n, kd, nb, A, lda, Aband,
                                                                ldab, tauQ, tauP);
 #else
     return rocblas_status_not_implemented;
@@ -170,7 +170,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_sge2tb(rocblas_handle handle,
 ROCSOLVER_EXPORT rocblas_status rocsolver_dge2tb(rocblas_handle handle,
                                                  const rocblas_int m,
                                                  const rocblas_int n,
-                                                 const rocblas_int kl,
+                                                 const rocblas_int kd,
                                                  const rocblas_int nb,
                                                  double* A,
                                                  const rocblas_int lda,
@@ -180,7 +180,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dge2tb(rocblas_handle handle,
                                                  double* tauP)
 {
 #ifdef ROCSOLVER_ENABLE_SVD_2STAGE
-    return rocsolver::rocsolver_ge2tb_impl<double, rocblas_int>(handle, m, n, kl, nb, A, lda, Aband,
+    return rocsolver::rocsolver_ge2tb_impl<double, rocblas_int>(handle, m, n, kd, nb, A, lda, Aband,
                                                                 ldab, tauQ, tauP);
 #else
     return rocblas_status_not_implemented;
@@ -190,7 +190,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dge2tb(rocblas_handle handle,
 ROCSOLVER_EXPORT rocblas_status rocsolver_cge2tb(rocblas_handle handle,
                                                  const rocblas_int m,
                                                  const rocblas_int n,
-                                                 const rocblas_int kl,
+                                                 const rocblas_int kd,
                                                  const rocblas_int nb,
                                                  rocblas_float_complex* A,
                                                  const rocblas_int lda,
@@ -201,7 +201,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_cge2tb(rocblas_handle handle,
 {
 #ifdef ROCSOLVER_ENABLE_SVD_2STAGE
     return rocsolver::rocsolver_ge2tb_impl<rocblas_float_complex, rocblas_int>(
-        handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+        handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 #else
     return rocblas_status_not_implemented;
 #endif
@@ -210,7 +210,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_cge2tb(rocblas_handle handle,
 ROCSOLVER_EXPORT rocblas_status rocsolver_zge2tb(rocblas_handle handle,
                                                  const rocblas_int m,
                                                  const rocblas_int n,
-                                                 const rocblas_int kl,
+                                                 const rocblas_int kd,
                                                  const rocblas_int nb,
                                                  rocblas_double_complex* A,
                                                  const rocblas_int lda,
@@ -221,7 +221,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zge2tb(rocblas_handle handle,
 {
 #ifdef ROCSOLVER_ENABLE_SVD_2STAGE
     return rocsolver::rocsolver_ge2tb_impl<rocblas_double_complex, rocblas_int>(
-        handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+        handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 #else
     return rocblas_status_not_implemented;
 #endif
@@ -230,7 +230,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zge2tb(rocblas_handle handle,
 ROCSOLVER_EXPORT rocblas_status rocsolver_sge2tb_64(rocblas_handle handle,
                                                     const int64_t m,
                                                     const int64_t n,
-                                                    const int64_t kl,
+                                                    const int64_t kd,
                                                     const int64_t nb,
                                                     float* A,
                                                     const int64_t lda,
@@ -240,7 +240,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_sge2tb_64(rocblas_handle handle,
                                                     float* tauP)
 {
 #if defined(ROCSOLVER_ENABLE_SVD_2STAGE) && defined(HAVE_ROCBLAS_64)
-    return rocsolver::rocsolver_ge2tb_impl<float, int64_t>(handle, m, n, kl, nb, A, lda, Aband,
+    return rocsolver::rocsolver_ge2tb_impl<float, int64_t>(handle, m, n, kd, nb, A, lda, Aband,
                                                            ldab, tauQ, tauP);
 #else
     return rocblas_status_not_implemented;
@@ -250,7 +250,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_sge2tb_64(rocblas_handle handle,
 ROCSOLVER_EXPORT rocblas_status rocsolver_dge2tb_64(rocblas_handle handle,
                                                     const int64_t m,
                                                     const int64_t n,
-                                                    const int64_t kl,
+                                                    const int64_t kd,
                                                     const int64_t nb,
                                                     double* A,
                                                     const int64_t lda,
@@ -260,7 +260,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dge2tb_64(rocblas_handle handle,
                                                     double* tauP)
 {
 #if defined(ROCSOLVER_ENABLE_SVD_2STAGE) && defined(HAVE_ROCBLAS_64)
-    return rocsolver::rocsolver_ge2tb_impl<double, int64_t>(handle, m, n, kl, nb, A, lda, Aband,
+    return rocsolver::rocsolver_ge2tb_impl<double, int64_t>(handle, m, n, kd, nb, A, lda, Aband,
                                                             ldab, tauQ, tauP);
 #else
     return rocblas_status_not_implemented;
@@ -270,7 +270,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_dge2tb_64(rocblas_handle handle,
 ROCSOLVER_EXPORT rocblas_status rocsolver_cge2tb_64(rocblas_handle handle,
                                                     const int64_t m,
                                                     const int64_t n,
-                                                    const int64_t kl,
+                                                    const int64_t kd,
                                                     const int64_t nb,
                                                     rocblas_float_complex* A,
                                                     const int64_t lda,
@@ -281,7 +281,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_cge2tb_64(rocblas_handle handle,
 {
 #if defined(ROCSOLVER_ENABLE_SVD_2STAGE) && defined(HAVE_ROCBLAS_64)
     return rocsolver::rocsolver_ge2tb_impl<rocblas_float_complex, int64_t>(
-        handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+        handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 #else
     return rocblas_status_not_implemented;
 #endif
@@ -290,7 +290,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_cge2tb_64(rocblas_handle handle,
 ROCSOLVER_EXPORT rocblas_status rocsolver_zge2tb_64(rocblas_handle handle,
                                                     const int64_t m,
                                                     const int64_t n,
-                                                    const int64_t kl,
+                                                    const int64_t kd,
                                                     const int64_t nb,
                                                     rocblas_double_complex* A,
                                                     const int64_t lda,
@@ -301,7 +301,7 @@ ROCSOLVER_EXPORT rocblas_status rocsolver_zge2tb_64(rocblas_handle handle,
 {
 #if defined(ROCSOLVER_ENABLE_SVD_2STAGE) && defined(HAVE_ROCBLAS_64)
     return rocsolver::rocsolver_ge2tb_impl<rocblas_double_complex, int64_t>(
-        handle, m, n, kl, nb, A, lda, Aband, ldab, tauQ, tauP);
+        handle, m, n, kd, nb, A, lda, Aband, ldab, tauQ, tauP);
 #else
     return rocblas_status_not_implemented;
 #endif
